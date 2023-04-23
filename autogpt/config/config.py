@@ -1,14 +1,16 @@
 """Configuration class to store the state of bools for different scripts access."""
 import os
+from typing import List
 
 import openai
 import yaml
+from auto_gpt_plugin_template import AutoGPTPluginTemplate
 from colorama import Fore
 from dotenv import load_dotenv
 
 from autogpt.config.singleton import Singleton
 
-load_dotenv(verbose=True)
+load_dotenv(verbose=True, override=True)
 
 
 class Config(metaclass=Singleton):
@@ -128,6 +130,34 @@ class Config(metaclass=Singleton):
         # Initialize the OpenAI API client
         openai.api_key = self.openai_api_key
 
+        self.plugins_dir = os.getenv("PLUGINS_DIR", "plugins")
+        self.plugins: List[AutoGPTPluginTemplate] = []
+        self.plugins_openai = []
+
+        plugins_allowlist = os.getenv("ALLOWLISTED_PLUGINS")
+        if plugins_allowlist:
+            self.plugins_allowlist = plugins_allowlist.split(",")
+        else:
+            self.plugins_allowlist = []
+        self.plugins_denylist = []
+
+        def set_aws_access_key_id(self, value: str) -> None:
+            """Set the AWS access key ID value."""
+            self.aws_access_key_id = value
+
+        def set_aws_secret_access_key(self, value: str) -> None:
+            """Set the AWS secret access key value."""
+            self.aws_secret_access_key = value
+
+        def set_aws_region_name(self, value: str) -> None:
+            """Set the AWS region name value."""
+            self.aws_region_name = value
+
+        def set_use_aws_polly_tts(self, value: str) -> None:
+            """Set the use AWS Polly TTS value."""
+            self.use_aws_polly_tts = value
+
+
     def get_azure_deployment_id_for_model(self, model: str) -> str:
         """
         Returns the relevant deployment id for the model specified.
@@ -166,11 +196,8 @@ class Config(metaclass=Singleton):
         Returns:
             None
         """
-        try:
-            with open(config_file) as file:
-                config_params = yaml.load(file, Loader=yaml.FullLoader)
-        except FileNotFoundError:
-            config_params = {}
+        with open(config_file) as file:
+            config_params = yaml.load(file, Loader=yaml.FullLoader)
         self.openai_api_type = config_params.get("azure_api_type") or "azure"
         self.openai_api_base = config_params.get("azure_api_base") or ""
         self.openai_api_version = (
@@ -226,23 +253,6 @@ class Config(metaclass=Singleton):
         """Set the ElevenLabs Voice 2 ID value."""
         self.elevenlabs_voice_2_id = value
 
-def set_aws_access_key_id(self, value: str) -> None:
-    """Set the AWS access key ID value."""
-    self.aws_access_key_id = value
-
-def set_aws_secret_access_key(self, value: str) -> None:
-    """Set the AWS secret access key value."""
-    self.aws_secret_access_key = value
-
-def set_aws_region_name(self, value: str) -> None:
-    """Set the AWS region name value."""
-    self.aws_region_name = value
-
-def set_use_aws_polly_tts(self, value: str) -> None:
-    """Set the use AWS Polly TTS value."""
-    self.use_aws_polly_tts = value
-
-
     def set_google_api_key(self, value: str) -> None:
         """Set the Google API key value."""
         self.google_api_key = value
@@ -262,6 +272,18 @@ def set_use_aws_polly_tts(self, value: str) -> None:
     def set_debug_mode(self, value: bool) -> None:
         """Set the debug mode value."""
         self.debug_mode = value
+
+    def set_plugins(self, value: list) -> None:
+        """Set the plugins value."""
+        self.plugins = value
+
+    def set_temperature(self, value: int) -> None:
+        """Set the temperature value."""
+        self.temperature = value
+
+    def set_memory_backend(self, value: int) -> None:
+        """Set the temperature value."""
+        self.memory_backend = value
 
 
 def check_openai_api_key() -> None:

@@ -60,12 +60,12 @@ VOICE_ENGINE = None
 
 if CFG.elevenlabs_api_key:
     VOICE_ENGINE = ElevenLabsSpeech()
+elif CFG.aws_access_key_id:
+    VOICE_ENGINE = PollyVoice()
 elif CFG.use_mac_os_tts == "True":
     VOICE_ENGINE = MacOSTTS()
 elif CFG.use_brian_tts == "True":
     VOICE_ENGINE = BrianSpeech()
-elif CFG.aws_access_key_id:
-    VOICE_ENGINE = PollyVoice()
 else:
     VOICE_ENGINE = GTTSVoice()
 
