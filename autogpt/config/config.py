@@ -62,6 +62,11 @@ class Config(metaclass=Singleton):
         self.use_brian_tts = False
         self.use_brian_tts = os.getenv("USE_BRIAN_TTS")
 
+        self.aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
+        self.aws_secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
+        self.aws_region_name = os.getenv("AWS_REGION_NAME")
+        self.use_aws_polly_tts = os.getenv("AWS_VOICE_ID")
+
         self.github_api_key = os.getenv("GITHUB_API_KEY")
         self.github_username = os.getenv("GITHUB_USERNAME")
 
@@ -220,6 +225,23 @@ class Config(metaclass=Singleton):
     def set_elevenlabs_voice_2_id(self, value: str) -> None:
         """Set the ElevenLabs Voice 2 ID value."""
         self.elevenlabs_voice_2_id = value
+
+def set_aws_access_key_id(self, value: str) -> None:
+    """Set the AWS access key ID value."""
+    self.aws_access_key_id = value
+
+def set_aws_secret_access_key(self, value: str) -> None:
+    """Set the AWS secret access key value."""
+    self.aws_secret_access_key = value
+
+def set_aws_region_name(self, value: str) -> None:
+    """Set the AWS region name value."""
+    self.aws_region_name = value
+
+def set_use_aws_polly_tts(self, value: str) -> None:
+    """Set the use AWS Polly TTS value."""
+    self.use_aws_polly_tts = value
+
 
     def set_google_api_key(self, value: str) -> None:
         """Set the Google API key value."""
