@@ -64,10 +64,11 @@ class Config(metaclass=Singleton):
         self.use_brian_tts = False
         self.use_brian_tts = os.getenv("USE_BRIAN_TTS")
 
-        self.aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
-        self.aws_secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
-        self.aws_region_name = os.getenv("AWS_REGION_NAME")
-        self.use_aws_polly_tts = os.getenv("AWS_VOICE_ID")
+        # self.use_amazon_polly_tts = False
+        self.aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID", None)
+        self.aws_secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY", None)
+        self.aws_region_name = os.getenv("AWS_REGION_NAME", None)
+        self.aws_voice_id = os.getenv("AWS_VOICE_ID", None)
 
         self.github_api_key = os.getenv("GITHUB_API_KEY")
         self.github_username = os.getenv("GITHUB_USERNAME")
