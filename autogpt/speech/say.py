@@ -16,14 +16,15 @@ VOICE_ENGINE = None
 if CFG.elevenlabs_api_key:
     VOICE_ENGINE = ElevenLabsSpeech()
 elif CFG.aws_access_key_id and CFG.aws_secret_access_key and CFG.aws_region_name and CFG.aws_voice_id:
-    print('Polly Enabled')
     VOICE_ENGINE = PollyVoice()
+    print(VOICE_ENGINE)
 elif CFG.use_mac_os_tts == "True":
     VOICE_ENGINE = MacOSTTS()
 elif CFG.use_brian_tts == "True":
     VOICE_ENGINE = BrianSpeech()
 else:
     VOICE_ENGINE = GTTSVoice()
+    print(VOICE_ENGINE)
 
 QUEUE_SEMAPHORE = Semaphore(
     1

@@ -18,7 +18,7 @@ class PollyVoice(VoiceBase):
             "polly",
             aws_access_key_id=cfg.aws_access_key_id,
             aws_secret_access_key=cfg.aws_secret_access_key,
-            region_name=cfg.aws_region_name,
+            # region_name=cfg.aws_region_name,
         )
         self._voices = [
             "Amy",
@@ -74,6 +74,8 @@ class PollyVoice(VoiceBase):
         response = self._client.synthesize_speech(
             OutputFormat="mp3", Text=text, VoiceId=self._voices[voice_index]
         )
+
+
 
         if "AudioStream" in response:
             with open("speech.mp3", "wb") as f:
