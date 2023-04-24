@@ -15,7 +15,7 @@ VOICE_ENGINE = None
 
 if CFG.elevenlabs_api_key:
     VOICE_ENGINE = ElevenLabsSpeech()
-elif CFG.aws_access_key_id and CFG.aws_secret_access_key and CFG.aws_region_name and CFG.aws_voice_id:
+elif CFG.aws_access_key_id and CFG.aws_secret_access_key:
     VOICE_ENGINE = PollyVoice()
     print(VOICE_ENGINE)
 elif CFG.use_mac_os_tts == "True":
@@ -33,9 +33,9 @@ QUEUE_SEMAPHORE = Semaphore(
 
 def speak(text: str, voice_index: int = 0) -> None:
     success = VOICE_ENGINE.say(text, voice_index)
-    print(VOICE_ENGINE)
     if not success:
         DEFAULT_VOICE_ENGINE.say(text)
+
 
     QUEUE_SEMAPHORE.release()
 
